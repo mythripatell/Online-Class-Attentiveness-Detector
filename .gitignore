@@ -1,0 +1,9 @@
+# Ignore database file and instance folder
+instance/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.DS_Store
+*.db
