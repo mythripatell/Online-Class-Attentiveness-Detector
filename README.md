@@ -52,17 +52,6 @@ EduPulse includes a built-in SQLite database to store all inattentive events:
 ---
 
 
----
-
-## 🧪 Sample Visuals
-
-### 🎯 Focus Detected  
-![Focus](focus_detected.png)
-
-### 😴 Not Paying Attention  
-![Distracted](not_paying_attention.png)
-
----
 
 ## 🚀 How to Run
 
