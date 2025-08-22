@@ -5,6 +5,7 @@ import cv2
 import mediapipe as mp
 import numpy as np
 from datetime import datetime
+import os  # added for environment variables
 
 app = Flask(__name__)
 app.secret_key = "supersecret123"
@@ -172,6 +173,10 @@ def inattention_data():
 
 # ---------------- START SERVER ---------------- #
 if __name__ == '__main__':
+    # Create database tables
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
+    
+    # Use Render's PORT environment variable if available
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=True)
