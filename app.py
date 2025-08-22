@@ -5,8 +5,13 @@ import cv2
 import mediapipe as mp
 import numpy as np
 from datetime import datetime
-import os  # added for environment variables
+import os
 
+# ---------------- HEADLESS SETTINGS ---------------- #
+os.environ["DISPLAY"] = ":0"  # Prevent GUI errors on Render
+LOCAL = os.environ.get("LOCAL", "1") == "1"  # Local webcam if LOCAL=1
+
+# ---------------- FLASK SETUP ---------------- #
 app = Flask(__name__)
 app.secret_key = "supersecret123"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
@@ -38,7 +43,8 @@ model_points = np.array([
     [0.0, -150.0, -10.0]
 ], dtype=np.float64)
 
-camera = cv2.VideoCapture(0)
+# Conditional webcam setup
+camera = cv2.VideoCapture(0) if LOCAL else None
 inattention_log = []
 
 def calculate_ear(eye_points):
@@ -50,9 +56,13 @@ def calculate_ear(eye_points):
 # ---------------- VIDEO STREAM LOGIC ---------------- #
 def generate_frames():
     while True:
-        success, frame = camera.read()
-        if not success:
-            break
+        if LOCAL:
+            success, frame = camera.read()
+            if not success:
+                break
+        else:
+            # On Render, no webcam: generate blank frame or skip
+            frame = np.zeros((480, 640, 3), dtype=np.uint8)
 
         h, w = frame.shape[:2]
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -112,12 +122,11 @@ def generate_frames():
 
         cv2.putText(frame, attention, (10, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, color, 3)
         ret, buffer = cv2.imencode('.jpg', frame)
-        frame = buffer.tobytes()
+        frame_bytes = buffer.tobytes()
         yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+               b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
 
 # ---------------- ROUTES ---------------- #
-
 @app.route('/')
 def home():
     return redirect(url_for('login'))
@@ -125,7 +134,6 @@ def home():
 @app.route('/edu')
 def edu():
     return render_template('edu.html')
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -140,7 +148,6 @@ def login():
         else:
             error = "Invalid username or password"
     return render_template('login.html', error=error)
-
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -173,10 +180,8 @@ def inattention_data():
 
 # ---------------- START SERVER ---------------- #
 if __name__ == '__main__':
-    # Create database tables
     with app.app_context():
         db.create_all()
     
-    # Use Render's PORT environment variable if available
     port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port, debug=True)
+    app.run(host="0.0.0.0", port=port, debug=False)  # debug=False for Render
