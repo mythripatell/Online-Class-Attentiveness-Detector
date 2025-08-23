@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EduPulse Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <h1 class="dashboard-title">EduPulse Dashboard</h1>
+
+  <div class="charts-container">
+    <div class="chart-card">
+      <h2>Weekly Attention Trend</h2>
+      <canvas id="trendChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <h2>Live Attentiveness</h2>
+      <canvas id="liveChart"></canvas>
+    </div>
+  </div>
+
+  <div class="log-section">
+    <h2>Inattention Logs</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Timestamp</th>
+          <th>Yaw</th>
+          <th>Pitch</th>
+          <th>EAR</th>
+        </tr>
+      </thead>
+      <tbody id="logTableBody">
+        <!-- Logs inserted dynamically -->
+      </tbody>
+    </table>
+  </div>
+
+  <script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+</body>
+</html>
