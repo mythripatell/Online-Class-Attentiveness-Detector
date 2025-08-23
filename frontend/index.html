@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduPulse - Attention Tracker</title>
+  <!-- <link rel="stylesheet" href="../static/edu.css" /> -->
+  <!-- <link rel="stylesheet" href="{{ url_for('static', filename='edu.css') }}"> -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='edu.css') }}">
+
+</head>
+<body>
+  <div class="headline">EduPulse</div>
+  <div class="subheadline">Built to Track Student Attention</div>
+
+  <!-- Webcam feed -->
+  <img id="videoFeed" src="/video_feed" width="640" height="480" />
+
+
+  <div id="bar">
+    <div id="statusBox"><a id="anc" href="">Start</a></div>
+    <div id="statusBox"><a id="anc" href="{{ url_for('dashboard') }}">Dashboard</a></div>
+  </div>
+
+  <!-- <script src="../static/edu.js"></script> -->
+</body>
+</html>
