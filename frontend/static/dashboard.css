@@ -1,0 +1,50 @@
+body {
+  background-color: #111;
+  color: #fff;
+  font-family: "Segoe UI", sans-serif;
+  padding: 20px;
+}
+
+.dashboard-title {
+  text-align: center;
+  color: #0ff;
+  margin-bottom: 30px;
+}
+
+.charts-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.chart-card {
+  background: #222;
+  padding: 20px;
+  border-radius: 15px;
+  margin: 15px;
+  width: 400px;
+  box-shadow: 0 0 10px rgba(0,255,255,0.2);
+}
+
+.log-section {
+  margin-top: 40px;
+  background: #222;
+  padding: 20px;
+  border-radius: 15px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #fff;
+}
+
+th, td {
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #444;
+}
+
+th {
+  color: #0ff;
+}
